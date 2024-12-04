@@ -1,70 +1,45 @@
 # LibraryFastApi
 
-Este proyecto es una API simple creada con FastAPI. La API tiene un único endpoint que devuelve un mensaje de saludo.
+Este proyecto es una API desarrollada con FastAPI para gestionar una biblioteca. Permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre libros y autores.
 
-## Estructura del Proyecto
+## Requisitos
 
-```txt
-/home/jgarcia/Personal/Cursos/Python/LibraryFastApi/
-│
-├── books.py
-└── Readme.md
-```
-
-## books.py
-
-El archivo `books.py` contiene la implementación de la API. Aquí está el contenido del archivo:
-
-```python
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/api-endpoint")
-async def first_api():
-    return {"message": "Hello World"}
-```
+- Python 3.7+
+- FastAPI
+- Uvicorn
 
 ## Instalación
 
-1. Clona el repositorio.
-2. Navega al directorio del proyecto.
-3. Instala las dependencias necesarias.
+1. Clona el repositorio:
+  ```bash
+  git clone https://github.com/tu_usuario/LibraryFastApi.git
+  cd LibraryFastApi
+  ```
 
-```bash
-pip install fastapi uvicorn
-```
+2. Crea un entorno virtual y actívalo:
+  ```bash
+  python -m venv venv
+  source venv/bin/activate  # En Windows usa `venv\Scripts\activate`
+  ```
 
-## Ejecución
-
-Para ejecutar la aplicación, utiliza el siguiente comando:
-
-```bash
-uvicorn books:app --reload
-```
-
-La aplicación estará disponible en `http://127.0.0.1:8000`.
+3. Instala las dependencias:
+  ```bash
+  pip install -r requirements.txt
+  ```
 
 ## Uso
 
-Puedes acceder al endpoint de la API en `http://127.0.0.1:8000/api-endpoint` para recibir un mensaje de saludo.
+1. Inicia el servidor:
+  ```bash
+  uvicorn main:app --reload
+  ```
 
-```json
-{
-  "message": "Hello World"
-}
-```
+2. Abre tu navegador y ve a `http://127.0.0.1:8000/docs` para ver la documentación interactiva de la API generada por Swagger.
 
-## Contribución
+## Endpoints
 
-Si deseas contribuir a este proyecto, por favor sigue los siguientes pasos:
-
-1. Haz un fork del repositorio.
-2. Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`).
-3. Realiza tus cambios y haz commit (`git commit -am 'Añadir nueva funcionalidad'`).
-4. Haz push a la rama (`git push origin feature/nueva-funcionalidad`).
-5. Abre un Pull Request.
-
-## Licencia
-
-Este proyecto está bajo la Licencia MIT.
+- `GET /books/` - Lista todos los libros
+- `POST /books/` - Crea un nuevo libro
+- `GET /books/{book_id}` - Obtiene un libro por ID
+- `PUT /books/{book_id}` - Actualiza un libro por ID
+- `DELETE /books/{book_id}` - Elimina un libro por ID
