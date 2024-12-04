@@ -2,4 +2,4 @@
 venv/
  
 # cache de ejecucucion
-# __pycache__/
+__pycache__/
