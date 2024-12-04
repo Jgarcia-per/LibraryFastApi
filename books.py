@@ -43,7 +43,7 @@ async def create_book(new_book: dict = Body()):
 
 @app.put("/books/update_book/")
 async def update_book(update_book: dict = Body()):
-    for i in range(len(BOOKS)):
+    for i, BOOKS in enumerate(BOOKS):
         if BOOKS[i].get('title').casefold() == update_book.get('title').casefold():
             BOOKS[i] = update_book
             return {'message': 'Book updated'}
