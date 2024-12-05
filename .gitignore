@@ -1,0 +1,5 @@
+# Entorno virtual
+venv/
+ 
+# cache de ejecucucion
+__pycache__/
