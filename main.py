@@ -2,7 +2,7 @@
 Main module of a library
 
 """
-from fastapi import Body, FastAPI
+from fastapi import FastAPI
 from Models.BookModel import Book, BookRequest
 
 app = FastAPI()
@@ -18,8 +18,17 @@ BOOKS = [
 
 @app.get("/books")
 async def read_allbooks():
+    """
+    Call all books
+    """
     return BOOKS
 
 @app.post("/books/new_book")
 async def create_book(book_request: BookRequest):
-    BOOKS.append(book_request)
+    """
+    Create new books
+    """
+    print(type(book_request))
+    new_book = Book(**book_request.model_dump())
+    print(type(new_book))
+    BOOKS.append(new_book)

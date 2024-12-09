@@ -6,7 +6,6 @@ class Book:
     Class Book
 
     """
-
     id:int
     title: str
     author: str
@@ -21,8 +20,12 @@ class Book:
         self.rating = rating
 
 class BookRequest(BaseModel):
-    id:int
+    """
+    Class BookRequest
+    """
+    book_id:int
     title: str
     author: str
     description:str
     rating: int
+    
