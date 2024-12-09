@@ -3,7 +3,7 @@ Main module of a library
 
 """
 from fastapi import Body, FastAPI
-from Models.BookModel import Book
+from Models.BookModel import Book, BookRequest
 
 app = FastAPI()
 
@@ -21,5 +21,5 @@ async def read_allbooks():
     return BOOKS
 
 @app.post("/books/new_book")
-async def create_book(book_request=Body()):
+async def create_book(book_request: BookRequest):
     BOOKS.append(book_request)
