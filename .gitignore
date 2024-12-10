@@ -3,3 +3,6 @@ venv/
  
 # cache de ejecucucion
 __pycache__/
+
+# Configuracion Visual Studio code
+.vscode/

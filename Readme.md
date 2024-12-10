@@ -25,69 +25,64 @@ pip install -r requirements.txt
 
 ## Project Structure
 
-- **books.py**: Contains the FastAPI application with various endpoints to manage books.
+- **main.py**: Contains the main FastAPI application with various endpoints to manage books.
+- **Models/BookModel.py**: Defines the `Book` and `BookRequest` models.
+- **Services/BookService.py**: Contains the service logic for book operations.
+- **Configs/Data.py**: Contains the initial data for the books collection.
 - **requirements.txt**: Lists all the dependencies required for the project.
 
 ## Endpoints
 
-### Get All Books
+### Main Application Endpoints (main.py)
+
+#### Get All Books
 
 - **URL**: `/books`
 - **Method**: `GET`
 - **Description**: Retrieves all books in the collection.
 
-### Get Book by Title
+#### Get Book by ID
 
-- **URL**: `/books/title/{book_title}`
+- **URL**: `/books/{book_id}`
 - **Method**: `GET`
-- **Description**: Retrieves a book by its title.
+- **Description**: Retrieves a book by its ID.
 
-### Get Books by Author
+#### Get Books by Rating
 
-- **URL**: `/books/author/{books_author}`
+- **URL**: `/books/rating/`
 - **Method**: `GET`
-- **Description**: Retrieves books by a specific author.
+- **Description**: Retrieves books by a specific rating. Requires a query parameter `book_rating`.
 
-### Get Books by Category
+#### Get Books by Published Date
 
-- **URL**: `/books/category/`
+- **URL**: `/books/published_date/`
 - **Method**: `GET`
-- **Description**: Retrieves books by a specific category. Requires a query parameter `category`.
+- **Description**: Retrieves books by a specific published date. Requires a query parameter `publishade_date`.
 
-### Get Books by Author and Category
+#### Create a New Book
 
-- **URL**: `/books/{book_author}/`
-- **Method**: `GET`
-- **Description**: Retrieves books by a specific author and category. Requires a query parameter `category`.
-
-### Create a New Book
-
-- **URL**: `/books/create_book/`
+- **URL**: `/books/new_book`
 - **Method**: `POST`
 - **Description**: Creates a new book entry. Requires a JSON body with book details.
 
-### Update a Book
+#### Update a Book
 
-- **URL**: `/books/update_book/`
+- **URL**: `/books/update_book`
 - **Method**: `PUT`
-- **Description**: Updates an existing book. Requires a JSON body with updated book details.
+- **Description**: Updates an existing book entry. Requires a JSON body with updated book details.
 
-### Delete a Book
+#### Delete a Book
 
-- **URL**: `/books/delete_book/{book_title}`
+- **URL**: `/books/{book_id}`
 - **Method**: `DELETE`
-- **Description**: Deletes a book by its title.
+- **Description**: Deletes a book by its ID.
 
 ## Running the Application
 
-To run the FastAPI application, execute:
+To run the main FastAPI application, execute:
 
 ```bash
-uvicorn books:app --reload
+uvicorn main:app --reload
 ```
 
 This will start the server on `http://127.0.0.1:8000`.
-
-## License
-
-This project is licensed under the MIT License.
