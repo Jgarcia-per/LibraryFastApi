@@ -73,6 +73,9 @@ async def update_book(book: BookRequest):
 
 @app.delete("/books/{book_id}")
 async def delete_book(book_id: int):
+    """
+    Delete Book
+    """
     for i in range(len(BOOKS)): # [consider-using-enumerate] / C0200
         if BOOKS[i].book_id == book_id:
             BOOKS.pop(i)
