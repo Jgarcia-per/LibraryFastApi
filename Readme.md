@@ -29,7 +29,6 @@ pip install -r requirements.txt
 - **Models/BookModel.py**: Defines the `Book` and `BookRequest` models.
 - **Services/BookService.py**: Contains the service logic for book operations.
 - **Configs/Data.py**: Contains the initial data for the books collection.
-- **books.py**: Contains an alternative FastAPI application with different endpoints to manage books.
 - **requirements.txt**: Lists all the dependencies required for the project.
 
 ## Endpoints
@@ -54,11 +53,29 @@ pip install -r requirements.txt
 - **Method**: `GET`
 - **Description**: Retrieves books by a specific rating. Requires a query parameter `book_rating`.
 
+#### Get Books by Published Date
+
+- **URL**: `/books/published_date/`
+- **Method**: `GET`
+- **Description**: Retrieves books by a specific published date. Requires a query parameter `publishade_date`.
+
 #### Create a New Book
 
 - **URL**: `/books/new_book`
 - **Method**: `POST`
 - **Description**: Creates a new book entry. Requires a JSON body with book details.
+
+#### Update a Book
+
+- **URL**: `/books/update_book`
+- **Method**: `PUT`
+- **Description**: Updates an existing book entry. Requires a JSON body with updated book details.
+
+#### Delete a Book
+
+- **URL**: `/books/{book_id}`
+- **Method**: `DELETE`
+- **Description**: Deletes a book by its ID.
 
 ## Running the Application
 
