@@ -1,8 +1,8 @@
 from configs.Database import Base
 from sqlalchemy import Column, Integer, String, Boolean
 
-class Todos(Base):
-    __tablename__ = 'todos'
+class Book(Base):
+    __tablename__ = 'books'
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)

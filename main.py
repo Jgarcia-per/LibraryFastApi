@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from models import TodosModel
+from models import BookModel
 from configs.Database import engine
 
 app = FastAPI()
-TodosModel.Base.metadata.create_all(bind=engine)
+BookModel.Base.metadata.create_all(bind=engine)
