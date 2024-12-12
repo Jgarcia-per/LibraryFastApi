@@ -17,9 +17,21 @@ def get_db():
     finally:
         db.close()
 
+db_dependency = Annotated[Session, Depends(get_db)]
+
 @app.get("/")
-async def read_all(db: Annotated[Session, Depends(get_db)]):
+async def read_all(db: db_dependency):
     """
     Get all Book
     """
     return db.query(BookModel.Book).all()
+
+@app.get("/books/{book_id}")
+async def read_book(db: db_dependency, book_id: int):
+    """
+    Get Book Filter By Book Id
+    """
+    book_model = db.query(BookModel.Book).filter(BookModel.Book.id == book_id).first
+    print(book_model)
+    if book_model is not None:
+        return book_model
