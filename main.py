@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from fastapi import FastAPI, HTTPException, Depends, Path
 from starlette import status
 
-from models import BookModel, BookRequestModel
+from models import BookModel
+from models.BookRequestModel import BookRequest
 from configs.Database import engine, SessionLocal
 
 app = FastAPI()
@@ -39,11 +40,30 @@ async def read_book(db: db_dependency, book_id: int = Path(ge=1)):
     raise HTTPException(status_code=404, detail='Not Found')
 
 @app.post("/book/create_book/", status_code=status.HTTP_201_CREATED)
-async def create_book(db: db_dependency, book_request: BookRequestModel.BookRequest):
+async def create_book(db: db_dependency, book_request: BookRequest):
     """
     Post Create New Book
     """
     book_model = BookModel.Book(**book_request.dict())
+
+    db.add(book_model)
+    db.commit()
+
+@app.put("/book/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def update_book (db: db_dependency,
+                       book_request: BookRequest,
+                       book_id: int = Path(ge=1)):
+    """
+    Put Update Book
+    """
+    book_model = db.query(BookModel.Book).filter(BookModel.Book.id == book_id).first()
+    if book_model is None:
+        raise HTTPException(status_code=404, detail='Not Found')
+
+    book_model.title       = book_request.title
+    book_model.description = book_request.description
+    book_model.priority    = book_request.priority
+    book_model.complete    = book_request.complete
 
     db.add(book_model)
     db.commit()
