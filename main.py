@@ -1,6 +1,6 @@
 from typing import Annotated
 from sqlalchemy.orm import Session
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from models import BookModel
 from configs.Database import engine, SessionLocal
 
@@ -31,7 +31,7 @@ async def read_book(db: db_dependency, book_id: int):
     """
     Get Book Filter By Book Id
     """
-    book_model = db.query(BookModel.Book).filter(BookModel.Book.id == book_id).first
-    print(book_model)
+    book_model = db.query(BookModel.Book).filter(BookModel.Book.id == book_id).first()
     if book_model is not None:
         return book_model
+    raise HTTPException(status_code=404, detail='Not Found')
