@@ -1,12 +1,10 @@
 from fastapi import APIRouter, HTTPException, Path
 from starlette import status
 
-from models import BookModel
 from models.BookModel import Book
 from models.BookRequestModel import BookRequest
-from configs.Database import engine, db_dependency
+from configs.Database import db_dependency
 
-BookModel.Base.metadata.create_all(bind=engine)
 BookRouter = APIRouter()
 
 @BookRouter.get("/", status_code=status.HTTP_200_OK)

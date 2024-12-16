@@ -1,5 +1,5 @@
 from configs.Database import Base
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 
 class Book(Base):
     __tablename__ = 'books'
@@ -9,3 +9,4 @@ class Book(Base):
     description = Column(String)
     priority = Column(Integer)
     complete = Column(Boolean, default=False)
+    supervisor = Column(Integer, ForeignKey("users.id"))
