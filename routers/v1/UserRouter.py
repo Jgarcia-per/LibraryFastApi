@@ -1,21 +1,33 @@
-from fastapi import APIRouter
+from typing import Annotated
+from fastapi import APIRouter, HTTPException, Depends
+from fastapi.security import OAuth2PasswordRequestForm
 from starlette import status
 
 from models.UserRequestModel import UserRequest
 from models.UserModel import Users
-from passlib.context import CryptContext
 from configs.Database import db_dependency
+from services.UserService import bcrypt_context, authenticate_user
 
 AuthRouter = APIRouter()
-bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @AuthRouter.post("/create", status_code=status.HTTP_201_CREATED)
 async def create_user(db: db_dependency, user_request: UserRequest):
     """
-    Autenticate User
+    Create User
     """
     user_model = Users(**user_request.dict())
     user_model.password = bcrypt_context.hash(user_request.password)
 
     db.add(user_model)
     db.commit()
+
+@AuthRouter.post("/token", status_code=status.HTTP_200_OK)
+async def login_user(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], 
+                                 db: db_dependency):
+    """
+    Autenticate User
+    """
+    user = authenticate_user(form_data.username, form_data.password, db)
+    if not user:
+        raise HTTPException(status_code=400, detail='Wrong User or Password')
+    return "Succesful Authentication"
