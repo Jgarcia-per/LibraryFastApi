@@ -1,12 +1,12 @@
 from typing import Annotated
+from starlette import status
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordRequestForm
-from starlette import status
 
 from models.UserRequestModel import UserRequest
 from models.UserModel import Users
 from configs.Database import db_dependency
-from services.UserService import bcrypt_context, authenticate_user
+from services.UserService import bcrypt_context, authenticate_user, create_acces_token
 
 AuthRouter = APIRouter()
 
@@ -28,6 +28,7 @@ async def login_user(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     Autenticate User
     """
     user = authenticate_user(form_data.username, form_data.password, db)
+    token = create_acces_token(user.username, user.id)
     if not user:
         raise HTTPException(status_code=400, detail='Wrong User or Password')
-    return "Succesful Authentication"
+    return {"acces_token": token, "token_type": "bearer"}
