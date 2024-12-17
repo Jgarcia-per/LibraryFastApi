@@ -1,11 +1,15 @@
-from fastapi import APIRouter, HTTPException, Path
+from fastapi import APIRouter, Depends, HTTPException, Path
 from starlette import status
+from typing import Annotated
 
 from models.BookModel import Book
 from models.BookRequestModel import BookRequest
 from configs.Database import db_dependency
+from services.UserService import get_current_user
 
 BookRouter = APIRouter()
+user_dependency = Annotated[dict, Depends(get_current_user)]
+
 
 @BookRouter.get("/", status_code=status.HTTP_200_OK)
 async def read_all(db: db_dependency):
@@ -25,10 +29,12 @@ async def read_book(db: db_dependency, book_id: int = Path(ge=1)):
     raise HTTPException(status_code=404, detail='Not Found')
 
 @BookRouter.post("/create_book/", status_code=status.HTTP_201_CREATED)
-async def create_book(db: db_dependency, book_request: BookRequest):
+async def create_book(user: user_dependency, db: db_dependency, book_request: BookRequest):
     """
     Post Create New Book
     """
+    if user is None:
+        raise HTTPException(status_code=401, detail="unauthorized")
     book_model = Book(**book_request.dict())
 
     db.add(book_model)
