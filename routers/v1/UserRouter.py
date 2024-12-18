@@ -10,7 +10,7 @@ from configs.Database import db_dependency
 from services.UserService import bcrypt_context, authenticate_user, create_acces_token, get_current_user
 
 AuthRouter = APIRouter()
-user_dependency = Annotated[dict, Depends(get_current_user)]
+User_dependency = Annotated[dict, Depends(get_current_user)]
 
 @AuthRouter.post("/create", status_code=status.HTTP_201_CREATED)
 async def create_user(db: db_dependency, user_request: UserRequest):
@@ -36,37 +36,42 @@ async def login_user(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     return {"access_token": token, "token_type": "bearer"}
 
 @AuthRouter.get("/user", status_code=status.HTTP_200_OK)
-async def user_all(user: user_dependency, db: db_dependency):
+async def user_all(user: User_dependency, db: db_dependency):
     """
     Get all Users
     """
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not login")
     if user.get('role') != "ADMIN":
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User unauthorized check the role")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="User unauthorized check the role")
     return db.query(Users).all()
 
 @AuthRouter.get("/user/current", status_code=status.HTTP_200_OK)
-async def user_current(user: user_dependency, db: db_dependency):
+async def user_current(user: User_dependency, db: db_dependency):
     """
     Get current User
     """
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not login")
     if user.get('role') != "ADMIN":
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User unauthorized check the role")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="User unauthorized check the role")
     return db.query(Users).filter(Users.id == user.get("id")).first()
 
 @AuthRouter.put("/user/password", status_code=status.HTTP_204_NO_CONTENT)
-async def change_password(user: user_dependency, db: db_dependency, change_request: ChangePasswordRequest):
+async def change_password(user: User_dependency, 
+                          db: db_dependency, 
+                          change_request: ChangePasswordRequest):
     """
     Update Password User
     """
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not login")
     if user.get('role') != "ADMIN":
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User unauthorized check the role")
-    
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="User unauthorized check the role")
+
     user_model = db.query(Users).filter(Users.id == change_request.user_id).first()
     if user_model is None:
         raise HTTPException(status_code=404, detail='Not Found')
@@ -77,14 +82,15 @@ async def change_password(user: user_dependency, db: db_dependency, change_reque
     db.commit()
 
 @AuthRouter.delete("/delete/user", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_user(user: user_dependency, db: db_dependency, user_id: int):
+async def delete_user(user: User_dependency, db: db_dependency, user_id: int):
     """
     Delete user
     """
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not login")
     if user.get("rol") != "ADMIN":
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User unauthorized check the role")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="User unauthorized check the role")
     user_model = db.query(Users).filter(Users.id == user_id).first()
     if user_model is None:
         raise HTTPException(status_code=404, detail='Not Found')
