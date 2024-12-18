@@ -58,7 +58,7 @@ async def user_current(user: user_dependency, db: db_dependency):
     return db.query(Users).filter(Users.id == user.get("id")).first()
 
 @AuthRouter.put("/user/password", status_code=status.HTTP_204_NO_CONTENT)
-async def change_password(user: user_dependency, db: db_dependency, changePasswordRequest: ChangePasswordRequest):
+async def change_password(user: user_dependency, db: db_dependency, change_request: ChangePasswordRequest):
     """
     Update Password User
     """
@@ -67,11 +67,11 @@ async def change_password(user: user_dependency, db: db_dependency, changePasswo
     if user.get('role') != "ADMIN":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User unauthorized check the role")
     
-    user_model = db.query(Users).filter(Users.id == changePasswordRequest.user_id).first()
+    user_model = db.query(Users).filter(Users.id == change_request.user_id).first()
     if user_model is None:
         raise HTTPException(status_code=404, detail='Not Found')
 
-    user_model.password = bcrypt_context.hash(changePasswordRequest.new_password)
+    user_model.password = bcrypt_context.hash(change_request.new_password)
 
     db.add(user_model)
     db.commit()
