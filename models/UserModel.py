@@ -10,5 +10,6 @@ class Users(Base):
     first_name = Column(String)
     last_name = Column(String)
     password = Column(String)
-    is_active = Column(Boolean ,default=True)
+    is_active = Column(Boolean, default=True)
     role = Column(String)
+    phone_number = Column(String)

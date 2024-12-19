@@ -3,7 +3,7 @@ from starlette import status
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
-from models.UserRequestModel import UserRequest, ChangePasswordRequest
+from models.UserRequestModel import UserRequest, ChangePasswordRequest, PhoneNumberRequest
 from models.UserModel import Users
 from models.TokenModel import Token
 from configs.Database import db_dependency
@@ -13,10 +13,17 @@ AuthRouter = APIRouter()
 User_dependency = Annotated[dict, Depends(get_current_user)]
 
 @AuthRouter.post("/create", status_code=status.HTTP_201_CREATED)
-async def create_user(db: db_dependency, user_request: UserRequest):
+async def create_user(user: User_dependency,
+                      db: db_dependency, 
+                      user_request: UserRequest):
     """
     Create User
     """
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not login")
+    if user.get('role') != "ADMIN":
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="User unauthorized check the role")
     user_model = Users(**user_request.dict())
     user_model.password = bcrypt_context.hash(user_request.password)
 
@@ -60,8 +67,8 @@ async def user_current(user: User_dependency, db: db_dependency):
     return db.query(Users).filter(Users.id == user.get("id")).first()
 
 @AuthRouter.put("/user/password", status_code=status.HTTP_204_NO_CONTENT)
-async def change_password(user: User_dependency, 
-                          db: db_dependency, 
+async def change_password(user: User_dependency,
+                          db: db_dependency,
                           change_request: ChangePasswordRequest):
     """
     Update Password User
@@ -77,6 +84,28 @@ async def change_password(user: User_dependency,
         raise HTTPException(status_code=404, detail='Not Found')
 
     user_model.password = bcrypt_context.hash(change_request.new_password)
+
+    db.add(user_model)
+    db.commit()
+
+@AuthRouter.put("/user/phone_number", status_code=status.HTTP_204_NO_CONTENT)
+async def change_phoneNumber(user: User_dependency,
+                            db: db_dependency,
+                            change_request: PhoneNumberRequest):
+    """
+    Update Phone Number User
+    """
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not login")
+    if user.get('role') != "ADMIN":
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="User unauthorized check the role")
+
+    user_model = db.query(Users).filter(Users.id == change_request.user_id).first()
+    if user_model is None:
+        raise HTTPException(status_code=404, detail='Not Found')
+
+    user_model.phone_number = change_request.new_phone_number
 
     db.add(user_model)
     db.commit()
