@@ -9,4 +9,3 @@ class Book(Base):
     description = Column(String)
     priority = Column(Integer)
     complete = Column(Boolean, default=False)
-    supervisor = Column(Integer, ForeignKey("users.id"))

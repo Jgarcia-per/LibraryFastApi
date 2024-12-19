@@ -14,5 +14,9 @@ app = FastAPI()
 BookModel.Base.metadata.create_all(bind=engine)
 UserModel.Base.metadata.create_all(bind=engine)
 
+@app.get("/healthy")
+def health_check():
+    return {'status': 'Healthy'}
+
 app.include_router(AuthRouter, prefix="/v1/auth", tags=["auth"])
 app.include_router(BookRouter, prefix="/v1/book", tags=["book"])
