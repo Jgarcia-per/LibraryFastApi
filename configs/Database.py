@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from configs.variables import USER_DB, PASSWORD_DB, HOST_DB, NAME_DB
+from env import USER_DB, PASSWORD_DB, HOST_DB, NAME_DB
 
 
 SQLALCHEMY_DATABASE_URL = f"postgresql://{USER_DB}:{PASSWORD_DB}@{HOST_DB}/{NAME_DB}"
