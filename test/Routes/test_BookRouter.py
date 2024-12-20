@@ -65,3 +65,26 @@ def test_update_book(test_info_book):
     assert model.description == 'Update book book used in unit testing'
     assert model.priority == 2
     assert model.complete == True
+
+def test_update_book_not_found(test_info_book):
+    request_data={
+        'title': 'Update Book for pytest',
+        'description': 'Update book book used in unit testing',
+        'priority': 2,
+        'complete': True
+    }
+    response = client.put('/v1/book/999/update', json=request_data)
+    assert response.status_code == 404
+    assert response.json() == {'detail': 'Not Found'}
+
+def test_delete_book(test_info_book):
+    response = client.delete('/v1/book/1/delete')
+    assert response.status_code == 204
+    db = TestingSessionLocal()
+    model = db.query(Book).filter(Book.id == 1).first()
+    assert model is None
+
+def test_delete_book_not_foun(test_info_book):
+    response = client.delete('/v1/book/999/delete')
+    assert response.status_code == 404
+    assert response.json() == {'detail': 'Not Found'}

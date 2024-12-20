@@ -5,7 +5,7 @@ from configs.Database import Base, get_db
 from main import app
 import pytest
 from models.BookModel import Book
-# from models.UserModel import Users
+from models.UserModel import Users
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test/LibraryTest.db"
 
@@ -47,4 +47,26 @@ def test_info_book():
     db.add(book)
     db.commit()
     yield book
+    db.close()
+
+@pytest.fixture
+def test_info_user():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+
+    user = Users(
+            email = 'user_pytest@gmail.com',
+            username = 'User Pytest',
+            first_name = 'User',
+            last_name = 'pytest',
+            password = '',
+            is_active = True,
+            role = 'ADMIN',
+            phone_number = '999 888 7766'
+    )
+
+    db = TestingSessionLocal()
+    db.add(user)
+    db.commit()
+    yield user
     db.close()
