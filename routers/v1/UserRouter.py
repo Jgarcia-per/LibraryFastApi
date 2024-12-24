@@ -24,7 +24,7 @@ async def create_user(user: User_dependency,
     if user.get('role') != "ADMIN":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail="User unauthorized check the role")
-    user_model = Users(**user_request.dict())
+    user_model = Users(**user_request.model_dump())
     user_model.password = bcrypt_context.hash(user_request.password)
 
     db.add(user_model)
