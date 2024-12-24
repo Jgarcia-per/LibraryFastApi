@@ -3,8 +3,7 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, declarative_base
 from env import USER_DB, PASSWORD_DB, HOST_DB, NAME_DB
 
 

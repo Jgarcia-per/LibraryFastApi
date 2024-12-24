@@ -37,7 +37,7 @@ async def create_book(user: user_dependency, db: db_dependency, book_request: Bo
     """
     if user is None:
         raise HTTPException(status_code=401, detail="unauthorized")
-    book_model = Book(**book_request.dict())
+    book_model = Book(**book_request.model_dump())
 
     db.add(book_model)
     db.commit()
