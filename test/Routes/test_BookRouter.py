@@ -51,13 +51,13 @@ def test_create_book(test_info_book):
     assert model.complete == request_data.get('complete')
 
 def test_update_book(test_info_book):
-    rerequest_data={
+    request_data={
         'title': 'Update Book for pytest',
         'description': 'Update book book used in unit testing',
         'priority': 2,
         'complete': True
     }
-    response = client.put('/v1/book/1/update', json=rerequest_data)
+    response = client.put('/v1/book/1/update', json=request_data)
     assert response.status_code == 204
     db = TestingSessionLocal()
     model = db.query(Book).filter(Book.id == 1).first()

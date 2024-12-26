@@ -59,7 +59,7 @@ def test_info_user():
             username = 'User Pytest',
             first_name = 'User',
             last_name = 'pytest',
-            password = '',
+            password = 'AdminPassword',
             is_active = True,
             role = 'ADMIN',
             phone_number = '999 888 7766'

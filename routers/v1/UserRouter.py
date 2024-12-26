@@ -110,14 +110,14 @@ async def change_phoneNumber(user: User_dependency,
     db.add(user_model)
     db.commit()
 
-@AuthRouter.delete("/delete/user", status_code=status.HTTP_204_NO_CONTENT)
+@AuthRouter.delete("/user/delete/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user(user: User_dependency, db: db_dependency, user_id: int):
     """
     Delete user
     """
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not login")
-    if user.get("rol") != "ADMIN":
+    if user.get("role") != "ADMIN":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail="User unauthorized check the role")
     user_model = db.query(Users).filter(Users.id == user_id).first()

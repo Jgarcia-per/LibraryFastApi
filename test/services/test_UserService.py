@@ -7,6 +7,7 @@ def override_get_current_user():
                 'last_name': 'pytest',
                 'email': 'user_pytest@gmail.com',
                 'username': 'User Pytest',
+                'password': 'AdminPassword',
                 'is_active': True,
                 'phone_number': '999 888 7766'
             }
