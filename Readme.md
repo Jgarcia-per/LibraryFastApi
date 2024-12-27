@@ -1,91 +1,65 @@
 # LibraryFastApi
 
-Este proyecto es una API para la gestión de una biblioteca, desarrollada con FastAPI. Permite realizar operaciones CRUD (Crear, Leer, Actualizar y Eliminar) sobre libros y usuarios.
+LibraryFastApi is a project designed to manage a library system using FastAPI. It includes functionalities for managing books and users, with features such as user authentication, book creation, updating, and deletion.
 
-## Requisitos
+## Features
 
-Para ejecutar este proyecto, necesitas tener instalado:
+- **User Management**: Create, read, update, and delete users.
+- **Book Management**: Create, read, update, and delete books.
+- **Authentication**: Secure user authentication using JWT tokens.
+- **Database Integration**: Uses PostgreSQL for data storage.
+- **Testing**: Comprehensive unit tests for services and routes.
 
-- Python 3.8 o superior
-- PostgreSQL
+## Installation
 
-## Instalación
+1. Clone the repository:
 
-1. Clona el repositorio:
-
-    ```bash
-    git clone <URL_DEL_REPOSITORIO>
+    ```sh
+    git clone https://github.com/yourusername/LibraryFastApi.git
     cd LibraryFastApi
     ```
 
-2. Crea un entorno virtual y actívalo:
+2. Create a virtual environment and activate it:
 
-    ```bash
+    ```sh
     python -m venv venv
-    source venv/bin/activate  # En Windows usa `venv\Scripts\activate`
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
     ```
 
-3. Instala las dependencias:
+3. Install the dependencies:
 
-    ```bash
+    ```sh
     pip install -r requirements.txt
     ```
 
-4. Configura las variables de entorno:
-    Copia el archivo `.env.example` a `.env` y actualiza los valores según tu configuración:
+4. Set up the environment variables:
 
-    ```bash
+    ```sh
     cp .env.example .env
+    # Edit the .env file with your database and secret key configurations
     ```
 
-## Ejecución
+5. Run the database migrations:
 
-1. Inicia la aplicación:
+    ```sh
+    alembic upgrade head
+    ```
 
-    ```bash
+6. Start the FastAPI server:
+
+    ```sh
     uvicorn main:app --reload
     ```
 
-2. La API estará disponible en `http://127.0.0.1:8000`.
+## Usage
 
-## Endpoints
+- Access the API documentation at `http://127.0.0.1:8000/docs` or `http://127.0.0.1:8000/redoc`.
+- Use the provided endpoints to manage users and books.
 
-### Autenticación
+## Running Tests
 
-- `POST /v1/auth/create`: Crear un nuevo usuario.
-- `POST /v1/auth/token`: Obtener un token de acceso.
-- `GET /v1/auth/user`: Obtener todos los usuarios (solo ADMIN).
-- `GET /v1/auth/user/current`: Obtener el usuario actual.
-- `PUT /v1/auth/user/password`: Cambiar la contraseña de un usuario (solo ADMIN).
-- `PUT /v1/auth/user/phone_number`: Cambiar el número de teléfono de un usuario (solo ADMIN).
-- `DELETE /v1/auth/delete/user`: Eliminar un usuario (solo ADMIN).
+To run the tests, use the following command:
 
-### Libros
-
-- `GET /v1/book/`: Obtener todos los libros.
-- `GET /v1/book/{book_id}`: Obtener un libro por ID.
-- `POST /v1/book/create_book/`: Crear un nuevo libro.
-- `PUT /v1/book/{book_id}/update`: Actualizar un libro por ID.
-- `DELETE /v1/book/{book_id}/delete`: Eliminar un libro por ID.
-
-## Modelos
-
-### BookModel
-
-- `id`: Integer, primary key.
-- `title`: String.
-- `description`: String.
-- `priority`: Integer.
-- `complete`: Boolean, default False.
-
-### UserModel
-
-- `id`: Integer, primary key.
-- `email`: String, unique.
-- `username`: String, unique.
-- `first_name`: String.
-- `last_name`: String.
-- `password`: String.
-- `is_active`: Boolean, default True.
-- `role`: String.
-- `phone_number`: String.
+```sh
+pytest
+```
