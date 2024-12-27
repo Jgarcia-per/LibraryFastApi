@@ -3,33 +3,44 @@ name: Python application
 on: [push]
 
 jobs:
-  test:
+
+  state: 
     runs-on: ubuntu-latest
-    
-    env:
-      ACCESS_TOKEN_EXPIRE_MINUTES: 30
 
     steps:
-    - name: Checkout repository code
-      uses: actions/checkout@v2
+      - name: status of GitHub Actions in the project
+        run: echo "Not implemented :c"
+  # test:
+  #   runs-on: ubuntu-latest
+    
+  #   env:
+  #     ACCESS_TOKEN_EXPIRE_MINUTES: 30
+  #     USER_DB: "test_user"
+  #     PASSWORD_DB: "test_password"
+  #     HOST_DB: "localhost"
+  #     NAME_DB: "test_db"
 
-    - name: Set up Python 3.9 environment
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
+  #   steps:
+  #   - name: Checkout repository code
+  #     uses: actions/checkout@v2
 
-    - name: Install SQLite
-      run: sudo apt-get install -y sqlite3
+  #   - name: Set up Python 3.9 environment
+  #     uses: actions/setup-python@v2
+  #     with:
+  #       python-version: '3.9'
 
-    - name: Set up test environment
-      run: |
-        mkdir -p test
-        touch test/LibraryTest.db
+  #   - name: Install SQLite
+  #     run: sudo apt-get install -y sqlite3
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+  #   - name: Set up test environment
+  #     run: |
+  #       mkdir -p test
+  #       touch test/LibraryTest.db
 
-    - name: Run tests
-      run: pytest
+  #   - name: Install dependencies
+  #     run: |
+  #       python -m pip install --upgrade pip
+  #       pip install -r requirements.txt
+
+  #   - name: Run tests
+  #     run: pytest
