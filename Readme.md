@@ -1,88 +1,91 @@
 # LibraryFastApi
 
-This project is a simple FastAPI application that manages a collection of books. It provides endpoints to create, read, update, and delete books from the collection.
+Este proyecto es una API para la gestión de una biblioteca, desarrollada con FastAPI. Permite realizar operaciones CRUD (Crear, Leer, Actualizar y Eliminar) sobre libros y usuarios.
 
-## Requirements
+## Requisitos
 
-It is recommended to use a virtual environment to manage dependencies. To create and activate a virtual environment, run the following commands:
+Para ejecutar este proyecto, necesitas tener instalado:
 
-```bash
-# Create a virtual environment
-python -m venv venv
+- Python 3.8 o superior
+- PostgreSQL
 
-# Activate the virtual environment (Linux/macOS)
-source venv/bin/activate
+## Instalación
 
-# Activate the virtual environment (Windows)
-.\venv\Scripts\activate
-```
+1. Clona el repositorio:
 
-To install the required dependencies, run:
+    ```bash
+    git clone <URL_DEL_REPOSITORIO>
+    cd LibraryFastApi
+    ```
 
-```bash
-pip install -r requirements.txt
-```
+2. Crea un entorno virtual y actívalo:
 
-## Project Structure
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # En Windows usa `venv\Scripts\activate`
+    ```
 
-- **main.py**: Contains the main FastAPI application with various endpoints to manage books.
-- **Models/BookModel.py**: Defines the `Book` and `BookRequest` models.
-- **Services/BookService.py**: Contains the service logic for book operations.
-- **Configs/Data.py**: Contains the initial data for the books collection.
-- **requirements.txt**: Lists all the dependencies required for the project.
+3. Instala las dependencias:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. Configura las variables de entorno:
+    Copia el archivo `.env.example` a `.env` y actualiza los valores según tu configuración:
+
+    ```bash
+    cp .env.example .env
+    ```
+
+## Ejecución
+
+1. Inicia la aplicación:
+
+    ```bash
+    uvicorn main:app --reload
+    ```
+
+2. La API estará disponible en `http://127.0.0.1:8000`.
 
 ## Endpoints
 
-### Main Application Endpoints (main.py)
+### Autenticación
 
-#### Get All Books
+- `POST /v1/auth/create`: Crear un nuevo usuario.
+- `POST /v1/auth/token`: Obtener un token de acceso.
+- `GET /v1/auth/user`: Obtener todos los usuarios (solo ADMIN).
+- `GET /v1/auth/user/current`: Obtener el usuario actual.
+- `PUT /v1/auth/user/password`: Cambiar la contraseña de un usuario (solo ADMIN).
+- `PUT /v1/auth/user/phone_number`: Cambiar el número de teléfono de un usuario (solo ADMIN).
+- `DELETE /v1/auth/delete/user`: Eliminar un usuario (solo ADMIN).
 
-- **URL**: `/books`
-- **Method**: `GET`
-- **Description**: Retrieves all books in the collection.
+### Libros
 
-#### Get Book by ID
+- `GET /v1/book/`: Obtener todos los libros.
+- `GET /v1/book/{book_id}`: Obtener un libro por ID.
+- `POST /v1/book/create_book/`: Crear un nuevo libro.
+- `PUT /v1/book/{book_id}/update`: Actualizar un libro por ID.
+- `DELETE /v1/book/{book_id}/delete`: Eliminar un libro por ID.
 
-- **URL**: `/books/{book_id}`
-- **Method**: `GET`
-- **Description**: Retrieves a book by its ID.
+## Modelos
 
-#### Get Books by Rating
+### BookModel
 
-- **URL**: `/books/rating/`
-- **Method**: `GET`
-- **Description**: Retrieves books by a specific rating. Requires a query parameter `book_rating`.
+- `id`: Integer, primary key.
+- `title`: String.
+- `description`: String.
+- `priority`: Integer.
+- `complete`: Boolean, default False.
 
-#### Get Books by Published Date
+### UserModel
 
-- **URL**: `/books/published_date/`
-- **Method**: `GET`
-- **Description**: Retrieves books by a specific published date. Requires a query parameter `publishade_date`.
-
-#### Create a New Book
-
-- **URL**: `/books/new_book`
-- **Method**: `POST`
-- **Description**: Creates a new book entry. Requires a JSON body with book details.
-
-#### Update a Book
-
-- **URL**: `/books/update_book`
-- **Method**: `PUT`
-- **Description**: Updates an existing book entry. Requires a JSON body with updated book details.
-
-#### Delete a Book
-
-- **URL**: `/books/{book_id}`
-- **Method**: `DELETE`
-- **Description**: Deletes a book by its ID.
-
-## Running the Application
-
-To run the main FastAPI application, execute:
-
-```bash
-uvicorn main:app --reload
-```
-
-This will start the server on `http://127.0.0.1:8000`.
+- `id`: Integer, primary key.
+- `email`: String, unique.
+- `username`: String, unique.
+- `first_name`: String.
+- `last_name`: String.
+- `password`: String.
+- `is_active`: Boolean, default True.
+- `role`: String.
+- `phone_number`: String.

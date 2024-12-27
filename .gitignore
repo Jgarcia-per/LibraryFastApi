@@ -1,8 +1,35 @@
 # Entorno virtual
 venv/
- 
-# cache de ejecucucion
+.env
+
+# Archivos compilados de Python
 __pycache__/
 
-# Configuracion Visual Studio code
+# Configuración de Visual Studio Code
 .vscode/
+
+# Archivos de logs
+*.log
+
+# Archivos de bases de datos locales
+*.sqlite3
+
+# Archivos de configuración de entorno
+.env
+
+# Archivos de caché
+.cache/
+*.cache
+
+# Archivos de pruebas
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Archivos de distribución
+dist/
+build/
+*.egg-info/
