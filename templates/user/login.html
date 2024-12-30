@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/css/bootstrap.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/css/base.css') }}">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login-Library</title>
-</head>
-<body>
-    <div class="container">
+{% include 'layoutUser.html' %}
+
+<div class="container">
         <div class="card">
             <div class="card-header">
                 Login
@@ -27,7 +19,7 @@
                 </form>
             </div>
             <div class="card-footer text-muted">
-                <a href="/auth/register-page"> Register? </a>
+                <a href="/v1/auth/register"> Register? </a>
           </div>
         </div>
     </div>

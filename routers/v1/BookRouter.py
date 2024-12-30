@@ -1,16 +1,37 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Path
+from fastapi.templating import Jinja2Templates
 from starlette import status
 
 from models.BookModel import Book
 from models.BookRequestModel import BookRequest
 from configs.Database import db_dependency
 from services.UserService import get_current_user
+from services.BookService import redirect_to_login
 
 BookRouter = APIRouter()
 user_dependency = Annotated[dict, Depends(get_current_user)]
 
+templates = Jinja2Templates(directory="templates/books")
 
+### Pages ###
+
+@BookRouter.get("/home", status_code=status.HTTP_200_OK)
+async def render_book_psge(request: BookRequest, db:db_dependency):
+    try:
+        user = await get_current_user(request.cookies.get('access_token'))
+        if user is None:
+            return redirect_to_login()
+        
+        books = db.query(Book).all()
+
+        return templates.TemplateResponse("book.html", {"request": request, "books": books, "user": user})
+    
+    except:
+        return redirect_to_login()
+
+
+### End points ###
 @BookRouter.get("/", status_code=status.HTTP_200_OK)
 async def read_all(db: db_dependency):
     """

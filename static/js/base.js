@@ -76,7 +76,7 @@
             });
 
             if (response.ok) {
-                window.location.href = '/todos/todo-page'; // Redirect to the todo page
+                window.location.href = '/v1/book/home'; // Redirect to the todo page
             } else {
                 // Handle error
                 const errorData = await response.json();
@@ -107,7 +107,7 @@
 
                 if (response.ok) {
                     // Handle success
-                    window.location.href = '/todos/todo-page'; // Redirect to the todo page
+                    window.location.href = '/v1/book/home'; // Redirect to the todo page
                 } else {
                     // Handle error
                     const errorData = await response.json();
@@ -135,9 +135,10 @@
             for (const [key, value] of formData.entries()) {
                 payload.append(key, value);
             }
+            console.log('Payload:', payload.toString())
 
             try {
-                const response = await fetch('/auth/token', {
+                const response = await fetch('/v1/auth/token', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -148,11 +149,13 @@
                 if (response.ok) {
                     // Handle success (e.g., redirect to dashboard)
                     const data = await response.json();
+                    console.log('Token received:', data.access_token);
                     // Delete any cookies available
                     logout();
                     // Save token to cookie
                     document.cookie = `access_token=${data.access_token}; path=/`;
-                    window.location.href = '/todos/todo-page'; // Change this to your desired redirect page
+                    console.log('Cookie set:', document.cookie);
+                    window.location.href = '/v1/book/home'; // Change this to your desired redirect page
                 } else {
                     // Handle error
                     const errorData = await response.json();
@@ -175,7 +178,7 @@
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
 
-            if (data.password !== data.password2) {
+            if (data.password !== data.passwordVerify) {
                 alert("Passwords do not match");
                 return;
             }
@@ -191,7 +194,7 @@
             };
 
             try {
-                const response = await fetch('/auth', {
+                const response = await fetch('/v1/auth/create', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -200,7 +203,7 @@
                 });
 
                 if (response.ok) {
-                    window.location.href = '/auth/login-page';
+                    window.location.href = '/v1/auth/login';
                 } else {
                     // Handle error
                     const errorData = await response.json();
@@ -247,5 +250,5 @@
         }
     
         // Redirect to the login page
-        window.location.href = '/auth/login-page';
+        window.location.href = '/v1/auth/login';
     };

@@ -20,6 +20,10 @@ templates = Jinja2Templates(directory="templates/user")
 def render_login_page(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
+@AuthRouter.get("/register")
+def render_register_page(request: Request):
+    return templates.TemplateResponse("register.html", {"request": request})
+
 ### ENDPOINTS ###
 @AuthRouter.post("/create", status_code=status.HTTP_201_CREATED)
 async def create_user(user: User_dependency,
